@@ -1,12 +1,27 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const CartContext = createContext();
+const StoreContext = createContext();
 
-export const useCart = () => useContext(CartContext);
+export const useStore = () => useContext(StoreContext);
 
-export const CartProvider = ({ children }) => {
+export const StoreProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // Load data from local storage on mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('maison_cart');
+    const savedWishlist = localStorage.getItem('maison_wishlist');
+    if (savedCart) setCart(JSON.parse(savedCart));
+    if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
+  }, []);
+
+  // Save data to local storage on change
+  useEffect(() => {
+    localStorage.setItem('maison_cart', JSON.stringify(cart));
+    localStorage.setItem('maison_wishlist', JSON.stringify(wishlist));
+  }, [cart, wishlist]);
 
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -25,12 +40,30 @@ export const CartProvider = ({ children }) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
+  const toggleWishlist = (product) => {
+    setWishlist((prev) => {
+      const exists = prev.find(item => item.id === product.id);
+      if (exists) {
+        return prev.filter(item => item.id !== product.id);
+      }
+      return [...prev, product];
+    });
+  };
+
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
   const cartTotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, isCartOpen, setIsCartOpen, cartCount, cartTotal }}>
+    <StoreContext.Provider value={{ 
+      cart, addToCart, removeFromCart, clearCart, 
+      isCartOpen, setIsCartOpen, cartCount, cartTotal,
+      wishlist, toggleWishlist 
+    }}>
       {children}
-    </CartContext.Provider>
+    </StoreContext.Provider>
   );
 };

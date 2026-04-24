@@ -5,14 +5,15 @@ import ProductDetail from './pages/ProductDetail';
 import About from './pages/About';
 import Auth from './pages/Auth';
 import Checkout from './pages/Checkout';
+import Wishlist from './pages/Wishlist';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
-import { CartProvider } from './context/CartContext';
+import { StoreProvider } from './context/CartContext';
 
 function App() {
   return (
-    <CartProvider>
+    <StoreProvider>
       <Router>
         <Navbar />
         <CartDrawer />
@@ -23,10 +24,11 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Routes>
         <Footer />
       </Router>
-    </CartProvider>
+    </StoreProvider>
   );
 }
 

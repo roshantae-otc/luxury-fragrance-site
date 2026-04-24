@@ -1,15 +1,23 @@
 import { motion } from 'framer-motion';
-import { useCart } from '../context/CartContext';
+import { useStore } from '../context/CartContext';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Checkout = () => {
-  const { cart, cartTotal } = useCart();
+  const { cart, cartTotal, clearCart } = useStore();
   const [isOrdered, setIsOrdered] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
-    setIsOrdered(true);
+    setIsProcessing(true);
+    
+    // Simulate API call and Email Dispatch
+    setTimeout(() => {
+      clearCart();
+      setIsProcessing(false);
+      setIsOrdered(true);
+    }, 2000);
   };
 
   if (isOrdered) {
@@ -20,9 +28,12 @@ const Checkout = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <span style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent-gold)' }}>Thank You</span>
+          <span style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent-gold)' }}>Success</span>
           <h1 style={{ fontSize: '42px', marginTop: '20px', marginBottom: '30px' }}>Your order is <i>confirmed</i>.</h1>
-          <p style={{ fontSize: '15px', color: 'rgba(0,0,0,0.6)', marginBottom: '40px' }}>A confirmation email has been sent to your inbox. We are preparing your olfactory journey.</p>
+          <p style={{ fontSize: '15px', color: 'rgba(0,0,0,0.6)', marginBottom: '40px' }}>
+            A confirmation email has been dispatched to your inbox.<br />
+            Thank you for choosing Maison Olfactive.
+          </p>
           <Link to="/" style={{ borderBottom: '1px solid #1A1A1A', paddingBottom: '5px', fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Return to Maison</Link>
         </motion.div>
       </main>
@@ -62,16 +73,22 @@ const Checkout = () => {
                 </div>
               </div>
 
-              <button type="submit" style={{
-                backgroundColor: '#1A1A1A',
-                color: '#FFF',
-                padding: '20px',
-                fontSize: '12px',
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                marginTop: '40px'
-              }}>
-                Complete Order
+              <button 
+                type="submit" 
+                disabled={isProcessing || cart.length === 0}
+                style={{
+                  backgroundColor: '#1A1A1A',
+                  color: '#FFF',
+                  padding: '20px',
+                  fontSize: '12px',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  marginTop: '40px',
+                  opacity: (isProcessing || cart.length === 0) ? 0.5 : 1,
+                  cursor: (isProcessing || cart.length === 0) ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {isProcessing ? 'Processing Ritual...' : 'Complete Order'}
               </button>
             </form>
           </section>
@@ -95,5 +112,6 @@ const Checkout = () => {
     </main>
   );
 };
+
 
 export default Checkout;

@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Search, Menu, User } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+import { ShoppingBag, Search, Menu, User, Heart } from 'lucide-react';
+import { useStore } from '../context/CartContext';
 
 const Navbar = () => {
-  const { cartCount, setIsCartOpen } = useCart();
+  const { cartCount, setIsCartOpen, wishlist } = useStore();
 
   return (
     <nav style={{
@@ -37,9 +37,33 @@ const Navbar = () => {
 
       <div style={{ display: 'flex', gap: '25px', alignItems: 'center' }}>
         <Search size={20} strokeWidth={1.5} style={{ cursor: 'pointer' }} />
+        
+        <Link to="/wishlist" style={{ position: 'relative' }}>
+          <Heart size={20} strokeWidth={1.5} />
+          {wishlist.length > 0 && (
+            <span style={{ 
+              position: 'absolute', 
+              top: '-8px', 
+              right: '-8px', 
+              fontSize: '9px', 
+              backgroundColor: 'var(--accent-gold)', 
+              color: 'white', 
+              borderRadius: '50%', 
+              width: '15px', 
+              height: '15px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center' 
+            }}>
+              {wishlist.length}
+            </span>
+          )}
+        </Link>
+
         <Link to="/auth">
           <User size={20} strokeWidth={1.5} style={{ cursor: 'pointer' }} />
         </Link>
+        
         <div 
           onClick={() => setIsCartOpen(true)}
           style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}

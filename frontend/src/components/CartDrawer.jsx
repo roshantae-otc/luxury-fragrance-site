@@ -1,10 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useCart } from '../context/CartContext';
+import { useStore } from '../context/CartContext';
 import { X, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const CartDrawer = () => {
-  const { cart, isCartOpen, setIsCartOpen, removeFromCart, cartTotal } = useCart();
+  const { cart, isCartOpen, setIsCartOpen, removeFromCart, cartTotal } = useStore();
 
   return (
     <AnimatePresence>
