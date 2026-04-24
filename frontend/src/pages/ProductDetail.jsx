@@ -1,28 +1,13 @@
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { fragrances } from '../data/fragrances';
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const product = fragrances.find(f => f.id === parseInt(id));
   const { addToCart } = useCart();
   
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/fragrances/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        setProduct(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Error fetching product:", err);
-        setLoading(false);
-      });
-  }, [id]);
-
-  if (loading) return <div style={{ paddingTop: '200px', textAlign: 'center' }}>Loading...</div>;
   if (!product) return <div style={{ paddingTop: '200px', textAlign: 'center' }}>Fragrance not found.</div>;
 
   return (

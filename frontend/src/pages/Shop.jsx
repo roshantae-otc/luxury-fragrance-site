@@ -1,16 +1,9 @@
 import { motion } from 'framer-motion';
 import ProductCard from '../components/ProductCard';
-import { useState, useEffect } from 'react';
+import { fragrances } from '../data/fragrances';
 
 const Shop = () => {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    fetch('http://localhost:5000/api/fragrances')
-      .then(res => res.json())
-      .then(data => setProducts(data))
-      .catch(err => console.error("Error fetching shop items:", err));
-  }, []);
+  const products = fragrances;
 
   return (
     <main style={{ paddingTop: '150px' }}>

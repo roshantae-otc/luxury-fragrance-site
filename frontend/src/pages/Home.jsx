@@ -2,17 +2,10 @@ import Hero from '../components/Hero';
 import Philosophy from '../components/Philosophy';
 import ProductCard from '../components/ProductCard';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { fragrances } from '../data/fragrances';
 
 const Home = () => {
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-
-  useEffect(() => {
-    fetch('http://localhost:5000/api/fragrances')
-      .then(res => res.json())
-      .then(data => setFeaturedProducts(data.slice(0, 3)))
-      .catch(err => console.error("Error fetching fragrances:", err));
-  }, []);
+  const featuredProducts = fragrances.slice(0, 3);
 
   return (
     <main>
