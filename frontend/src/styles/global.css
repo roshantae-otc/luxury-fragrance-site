@@ -68,3 +68,36 @@ img {
 .section {
   padding: var(--section-padding) 0;
 }
+
+/* Responsive Utilities */
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  
+  .mobile-only {
+    display: flex;
+  }
+  
+  .container {
+    padding: 0 20px;
+  }
+  
+  :root {
+    --section-padding: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 42px !important;
+  }
+  
+  .hero-content {
+    padding: 0 20px;
+  }
+}

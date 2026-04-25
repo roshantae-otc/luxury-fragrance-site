@@ -22,7 +22,11 @@ const Home = () => {
             <button style={{ fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase', borderBottom: '1px solid var(--text-primary)' }}>View All</button>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px' }}>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+            gap: '40px' 
+          }}>
             {featuredProducts.map((product, index) => (
               <motion.div
                 key={product.id}
@@ -40,7 +44,12 @@ const Home = () => {
 
       {/* Editorial Section */}
       <section className="section" style={{ backgroundColor: 'var(--bg-primary)' }}>
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '80px', alignItems: 'center' }}>
+        <div className="container" style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
+          gap: '60px', 
+          alignItems: 'center' 
+        }}>
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
