@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useStore } from '../context/CartContext';
 import { fragrances } from '../data/fragrances';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const product = fragrances.find(f => f.id === parseInt(id));
-  const { addToCart } = useCart();
+  const { addToCart } = useStore();
   
   if (!product) return <div style={{ paddingTop: '200px', textAlign: 'center' }}>Fragrance not found.</div>;
 
