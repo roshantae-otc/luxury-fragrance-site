@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section style={{ 
       height: '100vh', 
@@ -90,27 +93,33 @@ const Hero = () => {
           </p>
 
           <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
-            <button style={{ 
-              backgroundColor: '#FFF', 
-              color: '#000', 
-              padding: '18px 45px', 
-              fontSize: '12px', 
-              letterSpacing: '0.15em', 
-              textTransform: 'uppercase',
-              fontWeight: 500
-            }}>
+            <button 
+              onClick={() => navigate('/shop')}
+              style={{ 
+                backgroundColor: '#FFF', 
+                color: '#000', 
+                padding: '18px 45px', 
+                fontSize: '12px', 
+                letterSpacing: '0.15em', 
+                textTransform: 'uppercase',
+                fontWeight: 500
+              }}
+            >
               Shop Collection
             </button>
-            <button style={{ 
-              backgroundColor: 'transparent', 
-              color: '#FFF', 
-              padding: '18px 45px', 
-              fontSize: '12px', 
-              letterSpacing: '0.15em', 
-              textTransform: 'uppercase',
-              border: '1px solid rgba(255,255,255,0.3)',
-              fontWeight: 500
-            }}>
+            <button 
+              onClick={() => navigate('/about')}
+              style={{ 
+                backgroundColor: 'transparent', 
+                color: '#FFF', 
+                padding: '18px 45px', 
+                fontSize: '12px', 
+                letterSpacing: '0.15em', 
+                textTransform: 'uppercase',
+                border: '1px solid rgba(255,255,255,0.3)',
+                fontWeight: 500
+              }}
+            >
               Discover More
             </button>
           </div>
