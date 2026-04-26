@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 
 const CartDrawer = () => {
   const { cart, isCartOpen, setIsCartOpen, removeFromCart, cartTotal } = useStore();
+  const shippingThreshold = 150;
+  const amountToFreeShipping = shippingThreshold - cartTotal;
+  const progressPercentage = Math.min((cartTotal / shippingThreshold) * 100, 100);
 
   return (
     <AnimatePresence>
@@ -48,6 +51,27 @@ const CartDrawer = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
               <h2 style={{ fontSize: '24px' }}>Your Bag</h2>
               <X onClick={() => setIsCartOpen(false)} style={{ cursor: 'pointer' }} strokeWidth={1.5} />
+            </div>
+
+            {/* Free Shipping Tracker */}
+            <div style={{ marginBottom: '30px', padding: '20px', backgroundColor: '#F5F5F3', borderRadius: '2px' }}>
+              <p style={{ fontSize: '11px', marginBottom: '10px', textAlign: 'center', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                {amountToFreeShipping > 0 
+                  ? `You are $${amountToFreeShipping.toFixed(2)} away from Free Shipping`
+                  : "You've qualified for Free Shipping!"}
+              </p>
+              <div style={{ width: '100%', height: '1px', backgroundColor: 'rgba(0,0,0,0.1)', position: 'relative' }}>
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progressPercentage}%` }}
+                  style={{ 
+                    position: 'absolute', 
+                    height: '100%', 
+                    backgroundColor: 'var(--accent-gold)',
+                    left: 0 
+                  }} 
+                />
+              </div>
             </div>
 
             <div style={{ flexGrow: 1, overflowY: 'auto' }}>

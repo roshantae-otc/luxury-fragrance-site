@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import { useStore } from '../context/CartContext';
 import { fragrances } from '../data/fragrances';
@@ -7,7 +8,17 @@ const ProductDetail = () => {
   const { id } = useParams();
   const product = fragrances.find(f => f.id === parseInt(id));
   const { addToCart } = useStore();
-  
+  const [showStickyBar, setShowStickyBar] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show sticky bar after scrolling past the main product info
+      setShowStickyBar(window.scrollY > 600);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   if (!product) return <div style={{ paddingTop: '200px', textAlign: 'center' }}>Fragrance not found.</div>;
 
   return (
@@ -85,6 +96,63 @@ const ProductDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Sticky Purchase Bar */}
+      <AnimatePresence>
+        {showStickyBar && (
+          <motion.div
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            exit={{ y: 100 }}
+            style={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              width: '100%',
+              backgroundColor: '#FFF',
+              borderTop: '1px solid #F5F5F3',
+              padding: '15px 40px',
+              zIndex: 900,
+              display: 'flex',
+              justifyContent: 'center',
+              boxShadow: '0 -10px 30px rgba(0,0,0,0.03)'
+            }}
+          >
+            <div style={{ 
+              width: '100%', 
+              maxWidth: '1200px', 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center' 
+            }}>
+              <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                <img src={product.image} alt={product.name} style={{ width: '40px', height: '50px', objectFit: 'cover', backgroundColor: '#F5F5F3' }} />
+                <div>
+                  <h4 style={{ fontSize: '14px', margin: 0 }}>{product.name}</h4>
+                  <p style={{ fontSize: '11px', color: 'var(--accent-gold)', margin: 0 }}>{product.collection}</p>
+                </div>
+              </div>
+              
+              <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
+                <span style={{ fontSize: '18px' }}>${product.price}.00</span>
+                <button 
+                  onClick={() => addToCart(product)}
+                  style={{ 
+                    backgroundColor: '#1A1A1A', 
+                    color: '#FFF', 
+                    padding: '15px 40px', 
+                    fontSize: '11px', 
+                    letterSpacing: '0.15em', 
+                    textTransform: 'uppercase' 
+                  }}
+                >
+                  Add to Bag
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 };
