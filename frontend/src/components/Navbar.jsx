@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBag, Search, Menu, User, Heart, X } from 'lucide-react';
 import { useStore } from '../context/CartContext';
 
@@ -7,6 +7,8 @@ const Navbar = () => {
   const { cartCount, setIsCartOpen, wishlist } = useStore();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,15 +18,18 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // On non-home pages, we want the navbar to ALWAYS look like the "scrolled" version
+  const shouldBeSolid = isScrolled || !isHomePage;
+
   const navStyle = {
     position: 'fixed',
     top: 0,
     width: '100%',
     zIndex: 1000,
     transition: 'all 0.4s ease',
-    backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.98)' : 'transparent',
-    color: isScrolled ? '#1A1A1A' : '#FFF',
-    borderBottom: isScrolled ? '1px solid rgba(0,0,0,0.05)' : 'none',
+    backgroundColor: shouldBeSolid ? 'rgba(255, 255, 255, 0.98)' : 'transparent',
+    color: shouldBeSolid ? '#1A1A1A' : '#FFF',
+    borderBottom: shouldBeSolid ? '1px solid rgba(0,0,0,0.05)' : 'none',
   };
 
   const topBarStyle = {
